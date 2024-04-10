@@ -66,15 +66,15 @@ onMounted(() => {
 }
 )
 const cards = [
-    { title: '2023-01-11', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-    { title: '2023-01-12', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-    { title: '2023-01-13', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-    { title: '2023-01-11', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-    { title: '2023-01-12', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-    { title: '2023-01-13', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-    { title: '2023-01-11', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-    { title: '2023-01-12', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-    { title: '2023-01-13', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
+    { title: '2023-01-11', src: 'http://101.42.32.89:8000/media/3/dst/d2.png' },
+    { title: '2023-01-12', src: 'http://101.42.32.89:8000/media/3/dst/d2.png' },
+    { title: '2023-01-13', src: 'http://101.42.32.89:8000/media/3/dst/d2.png' },
+    { title: '2023-01-11', src: 'http://101.42.32.89:8000/media/3/dst/d2.png' },
+    { title: '2023-01-12', src: 'http://101.42.32.89:8000/media/3/dst/d2.png' },
+    { title: '2023-01-13', src: 'http://101.42.32.89:8000/media/3/dst/d2.png' },
+    { title: '2023-01-11', src: 'http://101.42.32.89:8000/media/3/dst/d2.png' },
+    { title: '2023-01-12', src: 'http://101.42.32.89:8000/media/3/dst/d2.png' },
+    { title: '2023-01-13', src: 'http://101.42.32.89:8000/media/3/dst/d2.png' },
 ]
 const gotoExamination = (i) => {
     router.push('/patient/' + route.params.patientId + '/examination/' + i);

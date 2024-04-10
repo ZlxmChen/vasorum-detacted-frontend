@@ -13,6 +13,10 @@ const router = createRouter({
           component: () => import('@/views/MainView.vue'),
         },
         {
+          path: '/test',
+          component: () => import('@/views/Test.vue'),
+        },
+        {
           name: 'patient',
           path: '/patient/:patientId',
           component: () => import('@/views/PatientView.vue'),
@@ -25,6 +29,10 @@ const router = createRouter({
             {
               path: 'examination/:examinationId',
               component: () => import('@/views/ExaminationView.vue'),
+            },
+            {
+              path: '3d/:examinationId',
+              component: () => import('@/views/SpaceView.vue'),
             },
           ],
         },

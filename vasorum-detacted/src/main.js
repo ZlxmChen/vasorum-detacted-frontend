@@ -14,6 +14,8 @@ import '@mdi/font/css/materialdesignicons.css';
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 
+import vue3dLoader from "vue-3d-loader";
+
 const vuetify = createVuetify({
   components,
   directives,
@@ -30,8 +32,8 @@ const vuetify = createVuetify({
 });
 import axios from 'axios';
 // axios.defaults.baseURL = 'http://127.0.0.1:4523/m1/3907399-0-default';
-axios.defaults.baseURL = 'http://101.42.32.89:8000/api';
-const app = createApp(App).use(vuetify).use(ElementPlus).use(router);
+axios.defaults.baseURL = 'http://101.42.32.89:8001/api';
+const app = createApp(App).use(vuetify).use(ElementPlus).use(router).use(vue3dLoader);
 app.mount('#app');
 
 export default app;
