@@ -1,45 +1,33 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
+      path: '/home',
+      component: () => import('@/views/MainView.vue')
+    },
+    {
       path: '/',
       redirect: '/home',
-      component: () => import('@/layouts/DefaultView.vue'),
+      component: () => import('@/layouts/MainLayout.vue'),
       children: [
         {
-          path: '/home',
-          component: () => import('@/views/MainView.vue'),
+          path: '/patientcase',
+          component: () => import('@/views/PatientCasesView.vue')
         },
         {
-          path: '/test',
-          component: () => import('@/views/Test.vue'),
+          path: '/patient/:patientId/case/:caseId',
+          component: () => import('@/views/ExaminationView.vue')
         },
         {
-          name: 'patient',
-          path: '/patient/:patientId',
-          component: () => import('@/views/PatientView.vue'),
-          children: [
-            {
-              name: 'cases',
-              path: 'cases',
-              component: () => import('@/views/SelectCaseView.vue'),
-            },
-            {
-              path: 'examination/:examinationId',
-              component: () => import('@/views/ExaminationView.vue'),
-            },
-            {
-              path: '3d/:examinationId',
-              component: () => import('@/views/SpaceView.vue'),
-            },
-          ],
-        },
-      ],
-    },
-  ],
-});
+          path: '/patient/:patientId/3d/:caseId',
+          component: () => import('@/views/SpaceView.vue')
+        }
+      ]
+    }
+  ]
+})
 // router.beforeEach((to, from, next) => {
 //   if (to.name === from.name && to.params.type !== from.params.type) {
 //     next({ name: 'empty', query: { toPath: to.fullPath } });
@@ -47,4 +35,32 @@ const router = createRouter({
 //     next();
 //   }
 // });
-export default router;
+export default router
+
+// children: [
+//   {
+//     path: '/home',
+//     component: () => import('@/views/MainView.vue'),
+//   },
+//   {
+//     path: '/test',
+//     component: () => import('@/views/Test.vue'),
+//   },
+//   {
+//     name: 'patient',
+//     path: '/patient/:patientId',
+//     component: () => import('@/views/PatientView.vue'),
+//     children: [
+//       {
+//         name: 'cases',
+//         path: 'cases',
+//         component: () => import('@/views/SelectCaseView.vue'),
+//       },
+//       {
+//         path: 'examination/:examinationId',
+//         component: () => import('@/views/ExaminationView.vue'),
+//       },
+//
+//     ],
+//   },
+// ],
