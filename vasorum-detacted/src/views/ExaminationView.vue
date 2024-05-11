@@ -44,7 +44,7 @@
             <div
               v-if="!edit"
               class="ma-4"
-              style="width: 45vw"
+              style="width: 45vw; max-height: 45vw"
             >
               <v-card
                 elevation="16"
@@ -60,7 +60,7 @@
             <!-- 标记图片 -->
             <div
               class="ma-4"
-              style="width: 45vw"
+              style="width: 45vw; max-height: 45vw"
             >
               <v-card
                 elevation="16"
@@ -76,13 +76,13 @@
                 <!-- 使用绝对定位来动态显示点 -->
                 <v-icon
                   v-if="edit"
-                  v-for="(point, index) in convertedPointList"
+                  v-for="(point, index) in pointList[imgPos].value"
                   :key="index"
                   class="point"
                   :style="{
                     position: 'absolute',
-                    left: point.x + 'px',
-                    top: point.y + 'px'
+                    left: (point.x * imageRef.clientWidth) / 100 + 'px',
+                    top: (point.y * imageRef.clientHeight) / 100 + 'px'
                   }"
                   :color="getPointColor(point.type)"
                   @contextmenu.prevent="deletePoint(index)"
@@ -122,7 +122,7 @@
                 </template>
                 <v-list class="ml-5">
                   <v-list-item
-                    v-for="(point, index) in typePointList"
+                    v-for="(point, index) in pointList[imgPos].value"
                     :key="index"
                     color="primary"
                     rounded="xl"
@@ -372,6 +372,7 @@
                     edit ? (isSeg = true) : (isSeg = isSeg)
                 "
               >
+                <!-- TODO 点击清除 -->
                 <v-icon>mdi-tag-edit-outline</v-icon>
                 <v-tooltip
                   open-delay="500"
@@ -492,10 +493,9 @@ const printing = () => {
   console.log(srcList.value)
   console.log(dstList.value)
 }
-const typePointList = computed(() => {
-  return pointList.value.filter((point) => point.type == editType.value)
-})
+
 const infoEdit = ref(false)
+
 onMounted(() => {
   get(
     '/medical/get_case',
@@ -519,6 +519,13 @@ onMounted(() => {
       dstList.value = msg.dst_list
       //缓存8001
       max.value = srcList.value.length - 1
+
+      //todo pointlist二维
+
+      for (let i = 0; i < max.value; i++) {
+        pointList.value[i] = new ref([])
+      }
+      console.log(pointList.value)
       console.log('get_ct_msg')
       console.log(msg)
       loadAll()
@@ -550,13 +557,13 @@ const getPointColor = (type) => {
       return 'primary' // 默认颜色
   }
 }
-const pointList = ref([])
+const pointList = ref([[]])
 // 处理右键点击事件，从 convertedPointList 中删除对应记录
 const deletePoint = (index) => {
-  pointList.value.splice(index, 1)
+  pointList.value[imgPos.value].value.splice(index, 1)
 }
 function deleteItem(index) {
-  pointList.value.splice(index, 1)
+  pointList.value[imgPos.value].value.splice(index, 1)
 }
 
 const gotoNewCase = () => {
@@ -639,7 +646,7 @@ const imageRef = ref({
   clientHeight: 100
 })
 const convertedPointList = computed(() => {
-  return pointList.value.map((point) => ({
+  return pointList.value[imgPos.value].map((point) => ({
     x: (point.x * imageRef.value.clientWidth) / 100, // 假设 x 坐标以百分比形式提供
     y: (point.y * imageRef.value.clientHeight) / 100, // 假设 y 坐标以百分比形式提供
     type: point.type // 可选，如果需要将原始数据也包含在转换后的点中
@@ -655,12 +662,13 @@ const getImageClickPosition = (event) => {
     const rect = img.getBoundingClientRect()
     const x = event.clientX - rect.left // X position within the element.
     const y = event.clientY - rect.top // Y position within the element.
-    pointList.value.push({
+    pointList.value[imgPos.value].value.push({
       x: (x * 100.0) / imageRef.value.clientWidth,
       y: (y * 100.0) / imageRef.value.clientHeight,
       type: editType.value
     })
     console.log('Click position in the image: X:', x, 'Y:', y)
+    console.log(pointList.value)
     setTimeout(
       () =>
         post(
@@ -672,7 +680,7 @@ const getImageClickPosition = (event) => {
           (msg) => {
             dstList.value[imgPos.value].seg_dst[segPos.value] = msg.url
             console.log()
-            tmp.value = 3 - tmp.value
+            tmp.value = (tmp.value % 4) + 1
           },
           (err, status) => {}
         ),
